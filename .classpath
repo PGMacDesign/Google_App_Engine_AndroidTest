@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="com.google.appengine.eclipse.core.GAE_CONTAINER"/>
+	<classpathentry kind="con" path="com.google.gwt.eclipse.core.GWT_CONTAINER"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7">
+		<attributes>
+			<attribute name="owner.project.facets" value="java"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/Pmacdowell/Documents/HOTB Java Workspace - 2015-03-02/Android Test/war/WEB-INF/lib/gson-2.2.4.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Pmacdowell/Documents/HOTB Java Workspace - 2015-03-02/Android Test/war/WEB-INF/lib/google-api-client-1.8.0-beta-sources.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Pmacdowell/Documents/HOTB Java Workspace - 2015-03-02/Android Test/war/WEB-INF/lib/google-oauth-client-java6-1.20.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Pmacdowell/Documents/HOTB Java Workspace - 2015-03-02/Android Test/war/WEB-INF/lib/google-oauth-client-appengine-1.20.0.jar"/>
+	<classpathentry kind="output" path="war/WEB-INF/classes"/>
+</classpath>

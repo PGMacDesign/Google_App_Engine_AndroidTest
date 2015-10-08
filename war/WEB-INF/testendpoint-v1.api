@@ -1,0 +1,255 @@
+{
+  "extends" : "thirdParty.api",
+  "abstract" : false,
+  "root" : "https://com-pgmacdesign-androidtest2.appspot.com/_ah/api",
+  "name" : "testendpoint",
+  "version" : "v1",
+  "defaultVersion" : false,
+  "adapter" : {
+    "bns" : "https://com-pgmacdesign-androidtest2.appspot.com/_ah/spi",
+    "deadline" : 65.0,
+    "type" : "lily"
+  },
+  "auth" : {
+    "allowCookieAuth" : false
+  },
+  "frontendLimits" : {
+    "unregisteredUserQps" : -1,
+    "unregisteredQps" : -1,
+    "unregisteredDaily" : -1,
+    "rules" : [ ]
+  },
+  "cacheControl" : {
+    "type" : "no-cache",
+    "maxAge" : 0
+  },
+  "ownerDomain" : "pgmacdesign",
+  "ownerName" : "pgmacdesign",
+  "methods" : {
+    "testendpoint.validateSession" : {
+      "path" : "validateSession",
+      "httpMethod" : "POST",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.pgmacdesign.androidtest.endpoints.TestEndpoint.validateSession",
+      "request" : {
+        "body" : "autoTemplate(backendRequest)",
+        "bodyName" : "resource"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "testendpoint.testDeleteData" : {
+      "path" : "testDeleteData",
+      "httpMethod" : "POST",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.pgmacdesign.androidtest.endpoints.TestEndpoint.testDeleteData",
+      "request" : {
+        "body" : "autoTemplate(backendRequest)",
+        "bodyName" : "resource"
+      },
+      "response" : {
+        "body" : "empty"
+      }
+    },
+    "testendpoint.testReturn" : {
+      "path" : "testReturn",
+      "httpMethod" : "POST",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.pgmacdesign.androidtest.endpoints.TestEndpoint.testReturn",
+      "request" : {
+        "body" : "autoTemplate(backendRequest)",
+        "bodyName" : "resource"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "testendpoint.storeUserData" : {
+      "path" : "storeUserData",
+      "httpMethod" : "POST",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.pgmacdesign.androidtest.endpoints.TestEndpoint.storeUserData",
+      "request" : {
+        "body" : "autoTemplate(backendRequest)",
+        "bodyName" : "resource"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "testendpoint.checkUserData" : {
+      "path" : "checkUserData",
+      "httpMethod" : "POST",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.pgmacdesign.androidtest.endpoints.TestEndpoint.checkUserData",
+      "request" : {
+        "body" : "autoTemplate(backendRequest)",
+        "bodyName" : "resource"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "testendpoint.testRetrieveData" : {
+      "path" : "testRetrieveData",
+      "httpMethod" : "POST",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.pgmacdesign.androidtest.endpoints.TestEndpoint.testRetrieveData",
+      "request" : {
+        "body" : "autoTemplate(backendRequest)",
+        "bodyName" : "resource"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "testendpoint.testInputData" : {
+      "path" : "testInputData",
+      "httpMethod" : "POST",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.pgmacdesign.androidtest.endpoints.TestEndpoint.testInputData",
+      "request" : {
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "empty"
+      }
+    }
+  },
+  "descriptor" : {
+    "schemas" : {
+      "User" : {
+        "id" : "User",
+        "type" : "object",
+        "properties" : {
+          "firstName" : {
+            "type" : "string"
+          },
+          "lastName" : {
+            "type" : "string"
+          },
+          "password" : {
+            "type" : "string"
+          },
+          "sessionId" : {
+            "type" : "string"
+          },
+          "message" : {
+            "type" : "string"
+          }
+        }
+      },
+      "Employee" : {
+        "id" : "Employee",
+        "type" : "object",
+        "properties" : {
+          "firstName" : {
+            "type" : "string"
+          },
+          "lastName" : {
+            "type" : "string"
+          },
+          "hireDate" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "attendedHrTraining" : {
+            "type" : "boolean"
+          }
+        }
+      },
+      "TestDTO" : {
+        "id" : "TestDTO",
+        "type" : "object",
+        "properties" : {
+          "firstName" : {
+            "type" : "string"
+          },
+          "lastName" : {
+            "type" : "string"
+          },
+          "age" : {
+            "type" : "integer"
+          },
+          "password" : {
+            "type" : "string"
+          },
+          "message" : {
+            "type" : "string"
+          }
+        }
+      }
+    },
+    "methods" : {
+      "com.pgmacdesign.androidtest.endpoints.TestEndpoint.validateSession" : {
+        "request" : {
+          "$ref" : "User"
+        },
+        "response" : {
+          "$ref" : "User"
+        }
+      },
+      "com.pgmacdesign.androidtest.endpoints.TestEndpoint.testDeleteData" : {
+        "request" : {
+          "$ref" : "Employee"
+        }
+      },
+      "com.pgmacdesign.androidtest.endpoints.TestEndpoint.testReturn" : {
+        "request" : {
+          "$ref" : "TestDTO"
+        },
+        "response" : {
+          "$ref" : "TestDTO"
+        }
+      },
+      "com.pgmacdesign.androidtest.endpoints.TestEndpoint.storeUserData" : {
+        "request" : {
+          "$ref" : "User"
+        },
+        "response" : {
+          "$ref" : "User"
+        }
+      },
+      "com.pgmacdesign.androidtest.endpoints.TestEndpoint.checkUserData" : {
+        "request" : {
+          "$ref" : "User"
+        },
+        "response" : {
+          "$ref" : "User"
+        }
+      },
+      "com.pgmacdesign.androidtest.endpoints.TestEndpoint.testRetrieveData" : {
+        "request" : {
+          "$ref" : "Employee"
+        },
+        "response" : {
+          "$ref" : "Employee"
+        }
+      },
+      "com.pgmacdesign.androidtest.endpoints.TestEndpoint.testInputData" : {
+      }
+    }
+  }
+}
