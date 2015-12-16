@@ -13,5 +13,16 @@
     <servlet-name>SystemServiceServlet</servlet-name>
     <url-pattern>/_ah/spi/*</url-pattern>
   </servlet-mapping>
+  
+  
+  <servlet>
+	<servlet-name>ClearSessionIds</servlet-name>
+	<servlet-class>com.pgmacdesign.androidtest.cronjobs.ClearSessionIds</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ClearSessionIds</servlet-name>
+	<url-pattern>/cronjobs/ClearSessionIds</url-pattern>
+  </servlet-mapping>
 
 </web-app>
+

@@ -60,6 +60,15 @@ public class TestEndpoint {
 			throw new Exception("Oh no! An error occurred");
 		}
 	}
+	@ApiMethod(name = "testInputData2", httpMethod = "POST")
+	public void testInputData2() throws Exception {
+		try {
+			TESTDatastoreManager.doStuff2();
+		} catch (Exception e){
+			e.printStackTrace();
+			throw new Exception("Oh no! An error occurred");
+		}
+	}
 	
 	@ApiMethod(name = "testRetrieveData", httpMethod = "POST")
 	public Employee testRetrieveData(Employee emp) throws Exception {

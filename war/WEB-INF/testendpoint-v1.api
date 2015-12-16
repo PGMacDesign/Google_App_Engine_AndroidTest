@@ -26,20 +26,19 @@
   "ownerDomain" : "pgmacdesign",
   "ownerName" : "pgmacdesign",
   "methods" : {
-    "testendpoint.validateSession" : {
-      "path" : "validateSession",
+    "testendpoint.testInputData2" : {
+      "path" : "testInputData2",
       "httpMethod" : "POST",
       "authLevel" : "NONE",
       "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
       "audiences" : [ ],
       "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.pgmacdesign.androidtest.endpoints.TestEndpoint.validateSession",
+      "rosyMethod" : "com.pgmacdesign.androidtest.endpoints.TestEndpoint.testInputData2",
       "request" : {
-        "body" : "autoTemplate(backendRequest)",
-        "bodyName" : "resource"
+        "body" : "empty"
       },
       "response" : {
-        "body" : "autoTemplate(backendResponse)"
+        "body" : "empty"
       }
     },
     "testendpoint.testDeleteData" : {
@@ -58,6 +57,22 @@
         "body" : "empty"
       }
     },
+    "testendpoint.validateSession" : {
+      "path" : "validateSession",
+      "httpMethod" : "POST",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.pgmacdesign.androidtest.endpoints.TestEndpoint.validateSession",
+      "request" : {
+        "body" : "autoTemplate(backendRequest)",
+        "bodyName" : "resource"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
     "testendpoint.testReturn" : {
       "path" : "testReturn",
       "httpMethod" : "POST",
@@ -66,6 +81,37 @@
       "audiences" : [ ],
       "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
       "rosyMethod" : "com.pgmacdesign.androidtest.endpoints.TestEndpoint.testReturn",
+      "request" : {
+        "body" : "autoTemplate(backendRequest)",
+        "bodyName" : "resource"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "testendpoint.testInputData" : {
+      "path" : "testInputData",
+      "httpMethod" : "POST",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.pgmacdesign.androidtest.endpoints.TestEndpoint.testInputData",
+      "request" : {
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "empty"
+      }
+    },
+    "testendpoint.testRetrieveData" : {
+      "path" : "testRetrieveData",
+      "httpMethod" : "POST",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.pgmacdesign.androidtest.endpoints.TestEndpoint.testRetrieveData",
       "request" : {
         "body" : "autoTemplate(backendRequest)",
         "bodyName" : "resource"
@@ -105,41 +151,29 @@
       "response" : {
         "body" : "autoTemplate(backendResponse)"
       }
-    },
-    "testendpoint.testRetrieveData" : {
-      "path" : "testRetrieveData",
-      "httpMethod" : "POST",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.pgmacdesign.androidtest.endpoints.TestEndpoint.testRetrieveData",
-      "request" : {
-        "body" : "autoTemplate(backendRequest)",
-        "bodyName" : "resource"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
-    "testendpoint.testInputData" : {
-      "path" : "testInputData",
-      "httpMethod" : "POST",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.pgmacdesign.androidtest.endpoints.TestEndpoint.testInputData",
-      "request" : {
-        "body" : "empty"
-      },
-      "response" : {
-        "body" : "empty"
-      }
     }
   },
   "descriptor" : {
     "schemas" : {
+      "Employee" : {
+        "id" : "Employee",
+        "type" : "object",
+        "properties" : {
+          "firstName" : {
+            "type" : "string"
+          },
+          "lastName" : {
+            "type" : "string"
+          },
+          "hireDate" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "attendedHrTraining" : {
+            "type" : "boolean"
+          }
+        }
+      },
       "User" : {
         "id" : "User",
         "type" : "object",
@@ -158,25 +192,6 @@
           },
           "message" : {
             "type" : "string"
-          }
-        }
-      },
-      "Employee" : {
-        "id" : "Employee",
-        "type" : "object",
-        "properties" : {
-          "firstName" : {
-            "type" : "string"
-          },
-          "lastName" : {
-            "type" : "string"
-          },
-          "hireDate" : {
-            "type" : "string",
-            "format" : "date-time"
-          },
-          "attendedHrTraining" : {
-            "type" : "boolean"
           }
         }
       },
@@ -203,6 +218,13 @@
       }
     },
     "methods" : {
+      "com.pgmacdesign.androidtest.endpoints.TestEndpoint.testInputData2" : {
+      },
+      "com.pgmacdesign.androidtest.endpoints.TestEndpoint.testDeleteData" : {
+        "request" : {
+          "$ref" : "Employee"
+        }
+      },
       "com.pgmacdesign.androidtest.endpoints.TestEndpoint.validateSession" : {
         "request" : {
           "$ref" : "User"
@@ -211,17 +233,22 @@
           "$ref" : "User"
         }
       },
-      "com.pgmacdesign.androidtest.endpoints.TestEndpoint.testDeleteData" : {
-        "request" : {
-          "$ref" : "Employee"
-        }
-      },
       "com.pgmacdesign.androidtest.endpoints.TestEndpoint.testReturn" : {
         "request" : {
           "$ref" : "TestDTO"
         },
         "response" : {
           "$ref" : "TestDTO"
+        }
+      },
+      "com.pgmacdesign.androidtest.endpoints.TestEndpoint.testInputData" : {
+      },
+      "com.pgmacdesign.androidtest.endpoints.TestEndpoint.testRetrieveData" : {
+        "request" : {
+          "$ref" : "Employee"
+        },
+        "response" : {
+          "$ref" : "Employee"
         }
       },
       "com.pgmacdesign.androidtest.endpoints.TestEndpoint.storeUserData" : {
@@ -239,16 +266,6 @@
         "response" : {
           "$ref" : "User"
         }
-      },
-      "com.pgmacdesign.androidtest.endpoints.TestEndpoint.testRetrieveData" : {
-        "request" : {
-          "$ref" : "Employee"
-        },
-        "response" : {
-          "$ref" : "Employee"
-        }
-      },
-      "com.pgmacdesign.androidtest.endpoints.TestEndpoint.testInputData" : {
       }
     }
   }

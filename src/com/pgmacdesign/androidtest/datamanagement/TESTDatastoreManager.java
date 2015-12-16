@@ -47,6 +47,30 @@ public class TESTDatastoreManager {
 		datastore.put(employee);
 	}
 	
+	public static void doStuff2(){
+		DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+
+		for(int i = 0; i < 100; i++){
+			Entity employee = new Entity("Employee");
+	
+			employee.setProperty("firstName", "Employee");
+			String str = "Number " + (i+1);
+			employee.setProperty("lastName", str);
+	
+			Date hireDate = new Date();
+			employee.setProperty("hireDate", hireDate);
+	
+			if(i % 2 == 0){
+				employee.setProperty("attendedHrTraining", true);
+			} else {
+				employee.setProperty("attendedHrTraining", false);
+			}
+			
+	
+			datastore.put(employee);
+		} 
+	}
+	
 	/**
 	 * Stores a user into the DB. Returns a boolean
 	 * @param dto User DTO to be used

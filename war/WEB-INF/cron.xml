@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<cronentries>
+
+ 	<cron>
+		<url>/cronjobs/ClearSessionIds</url>
+		<description>Clear Session IDs Daily Run</description>
+		<schedule>every day 00:00</schedule>
+		<timezone>America/Los_Angeles</timezone>
+	</cron>
+	
+</cronentries>

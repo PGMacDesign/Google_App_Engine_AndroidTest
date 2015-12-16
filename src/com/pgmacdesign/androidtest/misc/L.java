@@ -1,7 +1,6 @@
 package com.pgmacdesign.androidtest.misc;
 import java.util.logging.Logger;
 
-
 public class L {
 	
 	//This class logs data to the logcat	
