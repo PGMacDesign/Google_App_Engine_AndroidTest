@@ -1,7 +1,8 @@
 package com.pgmacdesign.androidtest.dto;
 
-public class User {
+public class User extends MasterObject  {
 
+	private Long id;
 	private String firstName;
 	private String lastName;
 	private String password;
@@ -9,6 +10,12 @@ public class User {
 	private String message;
 	
 	
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
 	public String getMessage() {
 		return message;
 	}

@@ -1,11 +1,16 @@
 package com.pgmacdesign.androidtest.endpoints;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import java.util.Random;
 import java.util.logging.Logger;
 
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.ApiNamespace;
+import com.google.appengine.api.datastore.Blob;
+import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.pgmacdesign.androidtest.datamanagement.TESTDatastoreManager;
 import com.pgmacdesign.androidtest.dto.Employee;
@@ -97,13 +102,236 @@ public class TestEndpoint {
 		}
 	}
 	
+	//ADDED
+	/**
+	 * Retrieve a list of all employees
+	 * @param dto This is the User DTO to be taken in. Requires the SessionId 
+	 * @return Returns a list of Employees
+	 * @throws Exception
+	 */
+	@ApiMethod(name = "getEmployees", httpMethod = "POST")
+	public List<Employee> getEmployees(User dto) throws Exception {
+		
+		//Check params first
+		if(dto == null){
+			throw new Exception("No object passed");
+		}
+	
+		String sessionId = dto.getSessionId();
+		if(sessionId == null){
+			throw new Exception("No Session ID Passed");
+		}
+		if(sessionId.isEmpty()){
+			throw new Exception("No Session ID Passed");
+		}
+	
+		boolean bool = false;
+		try {
+			bool = TESTDatastoreManager.validateSession(sessionId);
+		} catch (Exception e){
+			e.printStackTrace();
+		}
+		List<Employee> returnedList = new ArrayList<>();
+		
+		//Error message Emp
+		Employee errorEmp = new Employee();
+		
+		//If the session is not valid, send them back this
+		if(!bool){
+			errorEmp.setMessage("SessionId has expired!");
+			returnedList.add(errorEmp);
+			return returnedList;
+		}
+		
+		//Once checked, get the list
+		try {
+			returnedList = TESTDatastoreManager.getAllEmployees();
+			if (returnedList != null){
+				if(returnedList.size() > 0){
+					return returnedList;
+				} else {
+					errorEmp.setMessage("No Employees in the list!");
+					returnedList.add(errorEmp);
+					return returnedList;
+				}
+			} else {
+				errorEmp.setMessage("No Employees in the list!");
+				//Since it is null, will need to reInitialize
+				returnedList = new ArrayList<>();
+				returnedList.add(errorEmp);
+				return returnedList;
+			}
+		} catch (Exception e){
+			e.printStackTrace();
+			throw new Exception(e.toString());
+		}
+	}
+	
+	/*
+	@ApiMethod(name = "getSpecificEmployee", httpMethod = "POST")
+	public Employee getSpecificEmployee(Employee dto) throws Exception {
+		
+		//Check params first
+		if(dto == null){
+			throw new Exception("No object passed");
+		}
+	 
+		String sessionId = dto.getSessionId();
+		if(sessionId == null){
+			throw new Exception("No Session ID Passed");
+		}
+		if(sessionId.isEmpty()){
+			throw new Exception("No Session ID Passed");
+		}
+		
+		Long id = dto.getId();
+		if(id == null){
+			throw new Exception("No ID");
+		}
+	
+		boolean bool = false;
+		try {
+			bool = TESTDatastoreManager.validateSession(sessionId);
+		} catch (Exception e){
+			e.printStackTrace();
+		}
+		
+		//Error message Emp
+		Employee errorEmp = new Employee();
+		
+		//If the session is not valid, send them back this
+		if(!bool){
+			errorEmp.setMessage("SessionId has expired!");
+			return errorEmp;
+		}
+		
+		try{
+			//Query the DB for the entity by their ID
+			Entity toUpdate = TESTDatastoreManager.getSpecificEmployee(dto);
+			if(toUpdate != null){
+				boolean continueOn = TESTDatastoreManager.updateStuff(toUpdate);
+				
+				if(continueOn){
+					return dto;
+				} else {
+					return null;
+				}
+				
+			} else {
+				return null;
+			}
+		} catch(Exception e){
+			e.printStackTrace();
+			return null;
+		}
+
+	}
+	*/
+	
+	/**
+	 * Updates an employee
+	 * @param dto
+	 * @return
+	 * @throws Exception
+	 */
+	@ApiMethod(name = "updateEmployee", httpMethod = "POST")
+	public Employee updateEmployee(Employee dto) throws Exception {
+		
+		//Check params first
+		if(dto == null){
+			throw new Exception("No object passed");
+		}
+	 
+		//Check sessionId and validate the session
+		String sessionId = dto.getSessionId();
+		if(sessionId == null){
+			throw new Exception("No Session ID Passed");
+		}
+		if(sessionId.isEmpty()){
+			throw new Exception("No Session ID Passed");
+		}
+		
+		Long id = dto.getId();
+		if(id == null){
+			throw new Exception("No ID");
+		}
+	
+		boolean bool = false;
+		try {
+			bool = TESTDatastoreManager.validateSession(sessionId);
+		} catch (Exception e){
+			e.printStackTrace();
+		}
+		
+		//Error message Emp
+		Employee errorEmp = new Employee();
+		
+		//If the session is not valid, send them back this
+		if(!bool){
+			errorEmp.setMessage("SessionId has expired!");
+			return errorEmp;
+		}
+		
+		try{
+			//Query the DB for the entity by their ID
+			Entity toUpdate = TESTDatastoreManager.getSpecificEmployee(dto);
+			
+			if(toUpdate != null){
+				//Update all the fields
+				//Before updating, move the byte array to the Blob object for uploading
+				byte[] photo = dto.getPicture();
+				if(photo != null){
+					Blob blob = new Blob(photo);
+					toUpdate.setProperty("blobImage", blob);
+				}
+				String firstName = dto.getFirstName();
+				if(firstName != null){
+					toUpdate.setProperty("firstName", firstName);
+				}
+				
+				String lastName = dto.getLastName();
+				if(lastName != null){
+					toUpdate.setProperty("lastName", lastName);
+				}
+				
+				Date hireDate = dto.getHireDate();
+				if(hireDate != null){
+					toUpdate.setProperty("hireDate", hireDate);
+				}
+				
+				Boolean attendedHrTraining = dto.isAttendedHrTraining();
+				if(attendedHrTraining != null){
+					toUpdate.setProperty("attendedHrTraining", attendedHrTraining);
+				}
+
+				boolean continueOn = TESTDatastoreManager.updateStuff(toUpdate);
+				
+				if(continueOn){
+					return dto;
+				} else {
+					errorEmp.setMessage("Write to DB Failed!");
+					return errorEmp;
+				}
+				
+			} else {
+				errorEmp.setMessage("Could not find Employee!");
+				return errorEmp;
+			}
+		} catch(Exception e){
+			e.printStackTrace();
+			errorEmp.setMessage("Located Employee Failed!");
+			return errorEmp;
+		}
+
+	}
+	
 	@ApiMethod(name = "testDeleteData", httpMethod = "POST")
 	public void testDeleteData(Employee emp) throws Exception {
 		//Check params first
 		if(emp == null){
 			throw new Exception("No object passed");
 		}
-		log.warning("TESTEndpoint Line " + 95);
+
 		String firstName = emp.getFirstName();
 		if(firstName == null || firstName.isEmpty()){
 			throw new Exception("No first name passed");

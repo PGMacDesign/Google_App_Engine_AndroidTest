@@ -1,11 +1,17 @@
 package com.pgmacdesign.androidtest.datamanagement;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
+import com.google.api.server.spi.config.ApiMethod;
+import com.google.appengine.api.datastore.Blob;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.EntityNotFoundException;
 import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.datastore.Query.CompositeFilterOperator;
 import com.google.appengine.api.datastore.Query.Filter;
 import com.google.appengine.api.datastore.Query.FilterPredicate;
@@ -292,9 +298,34 @@ public class TESTDatastoreManager {
 	 * Updates an existing entity with already modified passed in variable
 	 * @param entity ALREADY MODIFIED entity to be updated. Modify values beforehand
 	 */
-	public static void updateStuff(Entity entity){
+	public static boolean updateStuff(Entity entity){
 		DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-		datastore.put(entity);
+		Key key =  datastore.put(entity);
+		if (key != null){
+			return true;
+		} else {
+			return false;
+		}
+	}
+	/**
+	 * Gets an entity from the DB and returns it
+	 * @param emp
+	 * @return
+	 */
+	public static Entity getSpecificEmployee(Employee emp){
+		if(emp == null){
+			return null;
+		} 
+		DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+		Long id = emp.getId();
+		Key key = KeyFactory.createKey("Employee", id);
+		try {
+			Entity ent = datastore.get(key);
+			return ent;
+		} catch (EntityNotFoundException e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 	
 	public static Employee queryStuff(String firstName){
@@ -311,6 +342,7 @@ public class TESTDatastoreManager {
 			String actualLastName = (String) result.getProperty("lastName");
 			boolean attendedHrTraining = (boolean) result.getProperty("attendedHrTraining");
 			Date hireDate = (Date) result.getProperty("hireDate");
+			Long id = (Long) result.getKey().getId();
 			
 			//Build an employee
 			Employee emp = new Employee();
@@ -318,17 +350,63 @@ public class TESTDatastoreManager {
 		  	emp.setLastName(actualLastName);
 		  	emp.setAttendedHrTraining(attendedHrTraining);
 		  	emp.setHireDate(hireDate);
+		  	emp.setId(id);
 		  	
 		  	return emp;
 		}
 		return null;
 	}
 
+	/**
+	 * Return a list of all of the employees
+	 * @return
+	 */
+	public static List<Employee> getAllEmployees(){
+		// Get the Datastore Service
+		DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+		Query q = buildAQuery(null);
+		// Use PreparedQuery interface to retrieve results
+		PreparedQuery pq = datastore.prepare(q);
+		//List for returning
+		List<Employee> returnedList = new ArrayList<>();
+		//Loops through all results and add them to the returning list 
+		for (Entity result : pq.asIterable()) {
+			
+			//Get results via the properties
+			String actualFirstName = (String) result.getProperty("firstName");
+			String actualLastName = (String) result.getProperty("lastName");
+			boolean attendedHrTraining = (boolean) result.getProperty("attendedHrTraining");
+			Date hireDate = (Date) result.getProperty("hireDate");
+			Blob blob = (Blob) result.getProperty("picture");
+			byte[] photo = blob.getBytes();
+			
+			//Build an employee
+			Employee emp = new Employee();
+		  	emp.setFirstName(actualFirstName);
+		  	emp.setLastName(actualLastName);
+		  	emp.setAttendedHrTraining(attendedHrTraining);
+		  	emp.setHireDate(hireDate);
+		  	emp.setPicture(photo);
+		  	
+		  	returnedList.add(emp);
+		}
+		return returnedList;
+	}
+	/**
+	 * Builds a Query
+	 * @param firstName First name, if null passed, no search params
+	 * @return
+	 */
 	public static Query buildAQuery(String firstName){
-		Filter nameFilter = new FilterPredicate("firstName", 
-				FilterOperator.EQUAL, firstName);
-
-		Query q = new Query("Employee").setFilter(nameFilter);
+		Query q;
+		if(firstName != null){
+			Filter nameFilter = new FilterPredicate("firstName", 
+					FilterOperator.EQUAL, firstName);
+	
+			q = new Query("Employee").setFilter(nameFilter);
+		} else {
+			q = new Query("Employee");
+		}
 		
 		return q;
 	}
