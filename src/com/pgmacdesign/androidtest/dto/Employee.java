@@ -13,7 +13,7 @@ public class Employee extends MasterObject {
 	private String firstName;
 	private String lastName;
 	private Date hireDate;
-	private boolean attendedHrTraining;
+	private Boolean attendedHrTraining;
 	private String message;
 	
 	
@@ -66,10 +66,10 @@ public class Employee extends MasterObject {
 	public void setHireDate(Date hireDate) {
 		this.hireDate = hireDate;
 	}
-	public boolean isAttendedHrTraining() {
+	public Boolean isAttendedHrTraining() {
 		return attendedHrTraining;
 	}
-	public void setAttendedHrTraining(boolean attendedHrTraining) {
+	public void setAttendedHrTraining(Boolean attendedHrTraining) {
 		this.attendedHrTraining = attendedHrTraining;
 	}
 	

@@ -363,33 +363,60 @@ public class TESTDatastoreManager {
 	 */
 	public static List<Employee> getAllEmployees(){
 		// Get the Datastore Service
+		log.severe("datastoremanager-" + 366);
 		DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+		log.severe("datastoremanager-" + 368);
 		Query q = buildAQuery(null);
+		log.severe("datastoremanager-" + 370);
 		// Use PreparedQuery interface to retrieve results
 		PreparedQuery pq = datastore.prepare(q);
+		log.severe("datastoremanager-" + 373);
 		//List for returning
 		List<Employee> returnedList = new ArrayList<>();
+		log.severe("datastoremanager-" + 376);
 		//Loops through all results and add them to the returning list 
 		for (Entity result : pq.asIterable()) {
+			log.severe("datastoremanager-" + 379);
+			//Vars to use
+			String actualFirstName = null;
+			String actualLastName = null;
+			Boolean attendedHrTraining = null;
+			Date hireDate = null;
+			Blob blob = null;
+			byte[] photo = null;
 			
 			//Get results via the properties
-			String actualFirstName = (String) result.getProperty("firstName");
-			String actualLastName = (String) result.getProperty("lastName");
-			boolean attendedHrTraining = (boolean) result.getProperty("attendedHrTraining");
-			Date hireDate = (Date) result.getProperty("hireDate");
-			Blob blob = (Blob) result.getProperty("picture");
-			byte[] photo = blob.getBytes();
+			try {
+				actualFirstName = (String) result.getProperty("firstName");
+			} catch (Exception e){}
+			try {
+				actualLastName = (String) result.getProperty("lastName");
+			} catch (Exception e){}
+			try {
+				attendedHrTraining = (Boolean) result.getProperty("attendedHrTraining");
+			} catch (Exception e){}
+			try {
+				hireDate = (Date) result.getProperty("hireDate");
+			} catch (Exception e){}
+			try {
+				blob = (Blob) result.getProperty("picture");
+			} catch (Exception e){}
+			try {
+				photo = blob.getBytes();
+			} catch (Exception e){}
+			log.severe("datastoremanager-" + 387);
 			
-			//Build an employee
+			//Build an employee (If conditionals for nulls)
 			Employee emp = new Employee();
-		  	emp.setFirstName(actualFirstName);
-		  	emp.setLastName(actualLastName);
-		  	emp.setAttendedHrTraining(attendedHrTraining);
-		  	emp.setHireDate(hireDate);
-		  	emp.setPicture(photo);
-		  	
+		  	emp.setFirstName((actualFirstName != null) ? actualFirstName : null);
+		  	emp.setLastName((actualLastName != null) ? actualLastName : null);
+		  	emp.setAttendedHrTraining((attendedHrTraining != null) ? attendedHrTraining : null);
+		  	emp.setHireDate((hireDate != null) ? hireDate : null);
+		  	emp.setPicture((photo != null) ? photo : null);
+		  	log.severe("datastoremanager-" + 395);
 		  	returnedList.add(emp);
 		}
+		log.severe("datastoremanager-" + 398);
 		return returnedList;
 	}
 	/**

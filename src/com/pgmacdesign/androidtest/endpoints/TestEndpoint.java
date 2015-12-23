@@ -14,6 +14,7 @@ import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.pgmacdesign.androidtest.datamanagement.TESTDatastoreManager;
 import com.pgmacdesign.androidtest.dto.Employee;
+import com.pgmacdesign.androidtest.dto.MasterObject;
 import com.pgmacdesign.androidtest.dto.TestDTO;
 import com.pgmacdesign.androidtest.dto.User;
 import com.pgmacdesign.androidtest.misc.BCrypt;
@@ -28,7 +29,7 @@ public class TestEndpoint {
 	//Initialize the logger for logging purposes
 	private static final Logger log = Logger.getLogger(TestEndpoint.class.getName());
 	
-	@ApiMethod(name = "testReturn", httpMethod = "POST")
+	@ApiMethod(name = "testReturn", httpMethod = "POST", path = "testReturn")
 	public TestDTO testReturn(TestDTO dto) throws Exception {
 		//First make sure that the DTO is not null
 		if(dto == null){
@@ -56,7 +57,7 @@ public class TestEndpoint {
 		}
 	}
 	
-	@ApiMethod(name = "testInputData", httpMethod = "POST")
+	@ApiMethod(name = "testInputData", httpMethod = "POST", path = "testInputData")
 	public void testInputData() throws Exception {
 		try {
 			TESTDatastoreManager.doStuff();
@@ -75,7 +76,7 @@ public class TestEndpoint {
 		}
 	}
 	
-	@ApiMethod(name = "testRetrieveData", httpMethod = "POST")
+	@ApiMethod(name = "testRetrieveData", httpMethod = "POST", path = "testRetrieveData")
 	public Employee testRetrieveData(Employee emp) throws Exception {
 		log.warning("log statement here. WARNING level");
 		log.severe("log statement here. SEVERE level");
@@ -109,9 +110,9 @@ public class TestEndpoint {
 	 * @return Returns a list of Employees
 	 * @throws Exception
 	 */
-	@ApiMethod(name = "getEmployees", httpMethod = "POST")
-	public List<Employee> getEmployees(User dto) throws Exception {
-		
+	@ApiMethod(name = "getEmployees", httpMethod = "POST", path = "getEmployees")
+	public MasterObject getEmployees(User dto) throws Exception {
+		//TEST
 		//Check params first
 		if(dto == null){
 			throw new Exception("No object passed");
@@ -132,34 +133,39 @@ public class TestEndpoint {
 			e.printStackTrace();
 		}
 		List<Employee> returnedList = new ArrayList<>();
+		MasterObject masterObject = new MasterObject();
 		
 		//Error message Emp
-		Employee errorEmp = new Employee();
+		MasterObject errorEmp = new MasterObject();
 		
 		//If the session is not valid, send them back this
 		if(!bool){
 			errorEmp.setMessage("SessionId has expired!");
-			returnedList.add(errorEmp);
-			return returnedList;
+			return masterObject;
 		}
 		
 		//Once checked, get the list
 		try {
+			log.severe("" + 148);
 			returnedList = TESTDatastoreManager.getAllEmployees();
+			log.severe("" + 150);
 			if (returnedList != null){
+				log.severe("" + 152);
 				if(returnedList.size() > 0){
-					return returnedList;
+					masterObject.setEmployees(returnedList);
+					log.severe("" + 154);
+					return masterObject;
 				} else {
-					errorEmp.setMessage("No Employees in the list!");
-					returnedList.add(errorEmp);
-					return returnedList;
+					log.severe("" + 157);
+					masterObject.setMessage("No Employees in the list!");
+					return masterObject;
 				}
 			} else {
 				errorEmp.setMessage("No Employees in the list!");
 				//Since it is null, will need to reInitialize
-				returnedList = new ArrayList<>();
-				returnedList.add(errorEmp);
-				return returnedList;
+				masterObject = new MasterObject();
+				masterObject.setMessage("No Employees In the list");
+				return masterObject;
 			}
 		} catch (Exception e){
 			e.printStackTrace();
@@ -234,14 +240,13 @@ public class TestEndpoint {
 	 * @return
 	 * @throws Exception
 	 */
-	@ApiMethod(name = "updateEmployee", httpMethod = "POST")
+	@ApiMethod(name = "updateEmployee", httpMethod = "POST", path = "updateEmployee")
 	public Employee updateEmployee(Employee dto) throws Exception {
-		
+
 		//Check params first
 		if(dto == null){
 			throw new Exception("No object passed");
 		}
-	 
 		//Check sessionId and validate the session
 		String sessionId = dto.getSessionId();
 		if(sessionId == null){
@@ -250,7 +255,6 @@ public class TestEndpoint {
 		if(sessionId.isEmpty()){
 			throw new Exception("No Session ID Passed");
 		}
-		
 		Long id = dto.getId();
 		if(id == null){
 			throw new Exception("No ID");
@@ -262,7 +266,6 @@ public class TestEndpoint {
 		} catch (Exception e){
 			e.printStackTrace();
 		}
-		
 		//Error message Emp
 		Employee errorEmp = new Employee();
 		
@@ -271,11 +274,10 @@ public class TestEndpoint {
 			errorEmp.setMessage("SessionId has expired!");
 			return errorEmp;
 		}
-		
 		try{
 			//Query the DB for the entity by their ID
 			Entity toUpdate = TESTDatastoreManager.getSpecificEmployee(dto);
-			
+
 			if(toUpdate != null){
 				//Update all the fields
 				//Before updating, move the byte array to the Blob object for uploading
@@ -288,31 +290,27 @@ public class TestEndpoint {
 				if(firstName != null){
 					toUpdate.setProperty("firstName", firstName);
 				}
-				
 				String lastName = dto.getLastName();
 				if(lastName != null){
 					toUpdate.setProperty("lastName", lastName);
 				}
-				
 				Date hireDate = dto.getHireDate();
 				if(hireDate != null){
 					toUpdate.setProperty("hireDate", hireDate);
 				}
-				
 				Boolean attendedHrTraining = dto.isAttendedHrTraining();
 				if(attendedHrTraining != null){
 					toUpdate.setProperty("attendedHrTraining", attendedHrTraining);
 				}
 
 				boolean continueOn = TESTDatastoreManager.updateStuff(toUpdate);
-				
+
 				if(continueOn){
 					return dto;
 				} else {
 					errorEmp.setMessage("Write to DB Failed!");
 					return errorEmp;
 				}
-				
 			} else {
 				errorEmp.setMessage("Could not find Employee!");
 				return errorEmp;
@@ -325,7 +323,7 @@ public class TestEndpoint {
 
 	}
 	
-	@ApiMethod(name = "testDeleteData", httpMethod = "POST")
+	@ApiMethod(name = "testDeleteData", httpMethod = "POST", path = "testDeleteData")
 	public void testDeleteData(Employee emp) throws Exception {
 		//Check params first
 		if(emp == null){
@@ -355,7 +353,7 @@ public class TestEndpoint {
 		}
 	}
 	
-	@ApiMethod(name = "validateSession", httpMethod = "POST")
+	@ApiMethod(name = "validateSession", httpMethod = "POST", path = "validateSession")
 	public User validateSession(User dto) throws Exception {
 		if(dto == null){
 			dto.setMessage("Please pass a valid User object");
@@ -376,7 +374,7 @@ public class TestEndpoint {
 		}
 	}
 	
-	@ApiMethod(name = "storeUserData", httpMethod = "POST")
+	@ApiMethod(name = "storeUserData", httpMethod = "POST", path = "storeUserData")
 	public User storeUserData(User dto) throws Exception {
 		//Check params first
 		if(dto == null){
@@ -428,7 +426,7 @@ public class TestEndpoint {
 		return dto;	
 	}
 	
-	@ApiMethod(name = "checkUserData", httpMethod = "POST")
+	@ApiMethod(name = "checkUserData", httpMethod = "POST", path = "checkUserData")
 	public User checkUserData(User dto) throws Exception {
 		//Check params first
 		if(dto == null){
